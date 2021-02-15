@@ -12,6 +12,7 @@ public class User {
 
     private String first_name;
     private String last_name;
+    private String password;
 
     @ManyToOne
     @JoinColumn(name = "ads_id")
