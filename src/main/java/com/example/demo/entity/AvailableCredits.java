@@ -10,7 +10,7 @@ import javax.persistence.OneToMany;
 @Entity(name = "available_credits")
 public class AvailableCredits {
     @Id
-    private int id;
+    private Long id;
 
     private String name;
     private String description;

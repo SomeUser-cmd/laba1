@@ -1,13 +1,18 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.AvailableCredits;
+import com.example.demo.services.AvailableCreditsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/availablecredits")
 public class AvailableCreditsController {
+    private final AvailableCreditsService service;
+
     @GetMapping("/all")
     public List<AvailableCredits> getAll(
             @RequestParam(required = false, defaultValue = "all" ) Integer size,
@@ -18,7 +23,7 @@ public class AvailableCreditsController {
 
     @GetMapping("/{id}")
     public AvailableCredits getAvailableCreditsById(@PathVariable Long id){
-        return  null;
+        return service.getById(id);
     }
 
     @PostMapping

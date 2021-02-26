@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity(name = "user")
 public class User {
     @Id
-    private int id;
+    private Long id;
 
     private String first_name;
     private String last_name;

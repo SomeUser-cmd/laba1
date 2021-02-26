@@ -11,7 +11,7 @@ import java.util.Set;
 @Entity(name = "ads")
 public class Ads {
     @Id
-    private int id;
+    private Long id;
 
     private String url;
     private String title;

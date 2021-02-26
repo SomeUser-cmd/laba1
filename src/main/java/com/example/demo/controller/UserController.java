@@ -1,13 +1,19 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.User;
+import com.example.demo.services.AdminService;
+import com.example.demo.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
+    private final UserService service;
+
     @GetMapping("/all")
     public List<User> getAll(
             @RequestParam(required = false, defaultValue = "all" ) Integer size,
@@ -18,7 +24,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id){
-        return  null;
+        return service.getById(id);
     }
 
     @PostMapping

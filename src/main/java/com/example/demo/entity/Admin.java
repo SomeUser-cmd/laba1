@@ -9,7 +9,7 @@ import javax.persistence.Id;
 @Entity(name = "admin")
 public class Admin {
     @Id
-    private int id;
+    private Long id;
 
     private String role;
     private String first_name;

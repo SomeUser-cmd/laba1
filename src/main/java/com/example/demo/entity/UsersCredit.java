@@ -11,7 +11,7 @@ import java.sql.Date;
 @Entity(name = "users_credit")
 public class UsersCredit {
     @Id
-    private int id;
+    private Long id;
 
     private String name;
     private String description;

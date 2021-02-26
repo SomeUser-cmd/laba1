@@ -1,13 +1,18 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Ads;
+import com.example.demo.services.AdsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/ads")
 public class AdsController {
+    private final AdsService service;
+
     @GetMapping("/all")
     public List<Ads> getAll(
             @RequestParam(required = false, defaultValue = "all" ) Integer size,
@@ -18,7 +23,7 @@ public class AdsController {
 
     @GetMapping("/{id}")
     public Ads getAdsById(@PathVariable Long id){
-        return  null;
+        return service.getById(id);
     }
 
     @PostMapping
