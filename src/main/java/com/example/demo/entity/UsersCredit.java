@@ -2,15 +2,14 @@ package com.example.demo.entity;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.sql.Date;
 
 @Data
 @Entity(name = "users_credit")
 public class UsersCredit {
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -21,6 +20,4 @@ public class UsersCredit {
     private Date startDate;
     private Date endDate;
 
-    @OneToOne
-    private User user;
 }

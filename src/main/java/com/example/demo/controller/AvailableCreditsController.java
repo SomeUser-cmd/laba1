@@ -1,12 +1,16 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.Admin;
 import com.example.demo.entity.AvailableCredits;
 import com.example.demo.services.AvailableCreditsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/availablecredits")
@@ -15,10 +19,17 @@ public class AvailableCreditsController {
 
     @GetMapping("/all")
     public List<AvailableCredits> getAll(
-            @RequestParam(required = false, defaultValue = "all" ) Integer size,
+            @RequestParam(required = false, defaultValue = "0" ) Integer size,
             @RequestParam(required = false, defaultValue = "1" )  Integer page
     ){
-        return null;
+        if (size == 0){
+            return  service.getAll();
+        }
+        else {
+            Pageable pageable = PageRequest.of(page, size);
+            System.out.println(pageable.toString());
+            return service.getAllPagination(pageable);
+        }
     }
 
     @GetMapping("/{id}")
@@ -26,18 +37,18 @@ public class AvailableCreditsController {
         return service.getById(id);
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public AvailableCredits createAvailableCredit(@RequestBody AvailableCredits availableCredit){
-        return null;
+        return service.create(availableCredit);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/edit/{id}")
     public AvailableCredits update(@PathVariable Long id,@RequestBody AvailableCredits availableCredits){
-        return null;
+        return service.update(id, availableCredits);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteAvailableCredit(@PathVariable Long id){
-
+    @DeleteMapping("/delete/{id}")
+    public AvailableCredits deleteAvailableCredit(@PathVariable Long id, @RequestBody AvailableCredits credit){
+        return service.delete(id, credit);
     }
 }

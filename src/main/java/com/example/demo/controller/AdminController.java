@@ -3,10 +3,13 @@ package com.example.demo.controller;
 import com.example.demo.entity.Admin;
 import com.example.demo.services.AdminService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admins")
@@ -15,10 +18,17 @@ public class AdminController {
 
     @GetMapping("/all")
     public List<Admin> getAll(
-            @RequestParam(required = false, defaultValue = "all" ) Integer size,
+            @RequestParam(required = false, defaultValue = "0" ) Integer size,
             @RequestParam(required = false, defaultValue = "1" )  Integer page
     ){
-        return null;
+        if (size == 0){
+            return  service.getAll();
+        }
+        else {
+            Pageable pageable = PageRequest.of(page, size);
+            System.out.println(pageable.toString());
+            return service.getAllPagination(pageable);
+        }
     }
 
     @GetMapping("/{id}")
@@ -26,18 +36,19 @@ public class AdminController {
         return service.getById(id);
     }
 
-    @PostMapping
+
+    @PostMapping("/add")
     public Admin createAdmin(@RequestBody Admin admin){
-        return null;
+        return service.create(admin);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/edit/{id}")
     public Admin update(@PathVariable Long id,@RequestBody Admin admin){
-        return null;
+        return service.update(id,admin);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteAdmin(@PathVariable Long id){
-
+    @DeleteMapping("/delete/{id}")
+    public Admin deleteAdmin(@PathVariable Long id, @RequestBody Admin admin){
+        return service.delete(id, admin);
     }
 }

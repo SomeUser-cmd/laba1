@@ -1,12 +1,17 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ReduceUserIdFormAdsResponse;
+import com.example.demo.entity.Admin;
 import com.example.demo.entity.Ads;
 import com.example.demo.services.AdsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/ads")
@@ -15,10 +20,17 @@ public class AdsController {
 
     @GetMapping("/all")
     public List<Ads> getAll(
-            @RequestParam(required = false, defaultValue = "all" ) Integer size,
+            @RequestParam(required = false, defaultValue = "0" ) Integer size,
             @RequestParam(required = false, defaultValue = "1" )  Integer page
     ){
-        return null;
+        if (size == 0){
+            return  service.getAll();
+        }
+        else {
+            Pageable pageable = PageRequest.of(page, size);
+            System.out.println(pageable.toString());
+            return service.getAllPagination(pageable);
+        }
     }
 
     @GetMapping("/{id}")
@@ -26,18 +38,23 @@ public class AdsController {
         return service.getById(id);
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public Ads createAds(@RequestBody Ads ads){
-        return null;
+        return service.create(ads);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/edit/{id}")
     public Ads update(@PathVariable Long id,@RequestBody Ads ads){
-        return null;
+        return service.update(id,ads);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteAds(@PathVariable Long id){
+    @DeleteMapping("delete/{id}")
+    public Ads deleteAds(@PathVariable Long id, @RequestBody Ads ads){
+        return service.delete(id, ads);
+    }
 
+    @GetMapping("/getByUserId/{id}")
+    public List<ReduceUserIdFormAdsResponse> getByUserId(@PathVariable Long id){
+        return service.getAdsByUserId(id);
     }
 }

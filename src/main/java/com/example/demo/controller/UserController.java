@@ -1,13 +1,17 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.Admin;
 import com.example.demo.entity.User;
 import com.example.demo.services.AdminService;
 import com.example.demo.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -16,10 +20,17 @@ public class UserController {
 
     @GetMapping("/all")
     public List<User> getAll(
-            @RequestParam(required = false, defaultValue = "all" ) Integer size,
+            @RequestParam(required = false, defaultValue = "0" ) Integer size,
             @RequestParam(required = false, defaultValue = "1" )  Integer page
     ){
-        return null;
+        if (size == 0){
+            return  service.getAll();
+        }
+        else {
+            Pageable pageable = PageRequest.of(page, size);
+            System.out.println(pageable.toString());
+            return service.getAllPagination(pageable);
+        }
     }
 
     @GetMapping("/{id}")
@@ -27,18 +38,18 @@ public class UserController {
         return service.getById(id);
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public User createUser(@RequestBody User user){
-        return null;
+        return service.create(user);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/edit/{id}")
     public User update(@PathVariable Long id,@RequestBody User user){
-        return null;
+        return service.update(id, user);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id){
-
+    @DeleteMapping("/delete/{id}")
+    public User deleteUser(@PathVariable Long id , @RequestBody User user){
+    return  service.delete(id, user);
     }
 }

@@ -3,10 +3,10 @@ CREATE TABLE `admin` (
   `role` varchar(20) DEFAULT 'contributor',
   `first_name` varchar(45) NOT NULL,
   `last_name` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
+  `password` varchar(45) DEFAULT 'initpassword',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `ads` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -37,10 +37,12 @@ CREATE TABLE `user` (
   `last_name` varchar(45) DEFAULT NULL,
   `ads_id` int DEFAULT NULL,
   `password` varchar(45) NOT NULL,
+  `current_credit_id` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 CREATE TABLE `users_credit` (
   `id` int NOT NULL AUTO_INCREMENT,
