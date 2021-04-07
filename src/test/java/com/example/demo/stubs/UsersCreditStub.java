@@ -9,6 +9,7 @@ public final class UsersCreditStub {
     public static UsersCredit credit = UsersCredit.builder()
             .id(ID)
             .description("some desc")
+            .name("some name")
             .percent(0.2)
             .alreadyPaid(2)
             .amount(10)

@@ -1,10 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Admin;
-import com.example.demo.repos.AdminRepository;
-import com.example.demo.stubs.AdminStub;
-import java.util.ArrayList;
-
+import com.example.demo.entity.Ads;
+import com.example.demo.repos.AdsRepository;
+import com.example.demo.stubs.AdsStub;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.junit.jupiter.api.Test;
@@ -16,6 +14,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -23,11 +23,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class AdminControllerTest {
+public class AdsControllerTest {
     ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
     @MockBean
-    AdminRepository repo;
+    AdsRepository repo;
 
     @Autowired
     private MockMvc mvc;
@@ -35,57 +35,57 @@ public class AdminControllerTest {
 
     @Test
     void all() throws Exception {
-        var admin = AdminStub.getRandomAdmin();
-        var list = new ArrayList<Admin>();
+        var admin = AdsStub.getRandomAds();
+        var list = new ArrayList<Ads>();
         list.add(admin);
         Mockito.when(repo.findAll()).thenReturn(list);
 
-        mvc.perform(get("/admins/all")
+        mvc.perform(get("/ads/all")
                 .accept(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(content().string(containsString(admin.getFirst_name())));
+                .andExpect(content().string(containsString(admin.getUrl())));
     }
 
     @Test
     void id() throws Exception {
-        var admin = AdminStub.getRandomAdmin();
-        Mockito.when(repo.findById(AdminStub.ID)).thenReturn(java.util.Optional.ofNullable(admin));
+        var admin = AdsStub.getRandomAds();
+        Mockito.when(repo.findById(AdsStub.ID)).thenReturn(java.util.Optional.ofNullable(admin));
 
-        mvc.perform(get("/admins/" + AdminStub.ID)
+        mvc.perform(get("/ads/" + AdsStub.ID)
                 .accept(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(content().string(containsString(admin.getFirst_name())));
+                .andExpect(content().string(containsString(admin.getUrl())));
     }
     @Test
     void add() throws Exception {
-        var admin = AdminStub.getRandomAdmin();
+        var admin = AdsStub.getRandomAds();
         Mockito.when(repo.save(admin)).thenReturn(admin);
 
-        mvc.perform(post("/admins/add")
+        mvc.perform(post("/ads/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(ow.writeValueAsString(admin))
         )
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(content().string(containsString(admin.getFirst_name())));
+                .andExpect(content().string(containsString(admin.getUrl())));
     }
 
     @Test
-    void deleteAdmin() throws Exception {
-        var admin = AdminStub.getRandomAdmin();
-        mvc.perform(delete("/admins/delete/" + AdminStub.ID)
+    void deleteAds() throws Exception {
+        var admin = AdsStub.getRandomAds();
+        mvc.perform(delete("/ads/delete/" + AdsStub.ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(ow.writeValueAsString(admin))
         )
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(content().string(containsString(admin.getFirst_name())));
+                .andExpect(content().string(containsString(admin.getUrl())));
     }
 }

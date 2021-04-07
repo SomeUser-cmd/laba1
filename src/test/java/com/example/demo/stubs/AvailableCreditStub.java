@@ -7,6 +7,7 @@ public final class AvailableCreditStub {
     public static AvailableCredits credit = AvailableCredits.builder()
             .id(ID)
             .description("some desc")
+            .name("name G1")
             .max_sum(10000)
             .min_sum(1000)
             .max_term(30)
